@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Breathe | Respiración Guiada</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" type="image/png" href="./public/breathe.png"/>
+</head>
+
+<body class="bg-gradient-to-br from-pink-100 to-blue-100 h-full grid place-content-center">
+
+  <div id="breathing-container" class="relative w-48 h-48">
+    <!-- Círculo de progreso -->
+    <div id="progress" class="absolute inset-0 rounded-full border-4 border-zinc-200"></div>
+
+    <!-- Texto de fase -->
+    <div id="phaseText"
+         class="absolute -top-10 w-full text-center text-4xl font-extrabold bg-gradient-to-r from-pink-300 via-purple-300 to-blue-300 bg-clip-text text-transparent opacity-0 transition-opacity duration-500 ease-in-out">
+    </div>
+
+    <!-- Botón central -->
+    <button id="startBtn"
+            class="absolute inset-0 m-auto w-24 h-24 bg-white rounded-full shadow-lg flex items-center justify-center text-gray-700 font-semibold">
+      Iniciar
+    </button>
+  </div>
+
+  <!-- Señales sonoras por fase -->
+  <audio id="audio-inhale" src="./sounds/chime_inhale.wav" preload="auto"></audio>
+  <audio id="audio-hold"   src="./sounds/bowl_hold.wav"    preload="auto"></audio>
+  <audio id="audio-exhale" src="./sounds/whisper_exhale.ogg" preload="auto"></audio>
+
+  <script src="./main.js"></script>
+</body>
+</html>
