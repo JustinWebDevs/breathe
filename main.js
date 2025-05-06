@@ -9,6 +9,8 @@ const phases = [
   const progressEl = document.getElementById('progress');
   const btn       = document.getElementById('startBtn');
   const phaseEl   = document.getElementById('phaseText');
+  const countdownEl = document.getElementById('countdown');
+  let countdownTimer = null;
   let breathing = false;
   
   function playCue(id) {
@@ -29,6 +31,28 @@ const phases = [
     phaseEl.classList.remove('opacity-100');
     phaseEl.classList.add('opacity-0');
   }
+
+  function startCountdown(ms) {
+    const totalSecs = Math.floor(ms / 1000);
+    let remaining = totalSecs;
+    countdownEl.textContent = remaining;
+    countdownEl.classList.remove('opacity-0');
+    countdownEl.classList.add('opacity-100');
+  
+    clearInterval(countdownTimer); // limpia por si ya hay uno
+  
+    countdownTimer = setInterval(() => {
+      remaining--;
+      if (remaining <= 0) {
+        clearInterval(countdownTimer);
+        countdownEl.classList.remove('opacity-100');
+        countdownEl.classList.add('opacity-0');
+        return;
+      }
+      countdownEl.textContent = remaining;
+    }, 1000);
+  }
+  
   
   function animatePhase(duration, fillUp, color) {
     return new Promise(resolve => {
@@ -65,6 +89,9 @@ const phases = [
       breathing = false;
       btn.textContent = 'Iniciar';
       hidePhase();
+      clearInterval(countdownTimer);
+      countdownEl.classList.remove('opacity-100');
+      countdownEl.classList.add('opacity-0');
       return;
     }
   
@@ -73,18 +100,21 @@ const phases = [
   
     while (breathing) {
       showPhase(phases[0]);
+      startCountdown(phases[0].duration);
       let tid = setTimeout(hidePhase, phases[0].duration - FADE_DURATION);
       await animatePhase(phases[0].duration, true, phases[0].color);
       clearTimeout(tid); hidePhase();
       if (!breathing) break;
   
       showPhase(phases[1]);
+      startCountdown(phases[1].duration);
       tid = setTimeout(hidePhase, phases[1].duration - FADE_DURATION);
       await holdPhase(phases[1].duration, phases[1].color);
       clearTimeout(tid); hidePhase();
       if (!breathing) break;
   
       showPhase(phases[2]);
+      startCountdown(phases[2].duration);
       tid = setTimeout(hidePhase, phases[2].duration - FADE_DURATION);
       await animatePhase(phases[2].duration, false, phases[2].color);
       clearTimeout(tid); hidePhase();
